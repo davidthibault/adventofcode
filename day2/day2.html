@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Advent of code</title>
+</head>
+
+<body>
+    <h1>Advent of code 2021 : Day 2</h1>
+    <div id="results-1"></div>
+    <div id="results-2"></div>
+    <script>
+        const url = "input2.txt";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const results = xhttp.responseText.split('\n');
+                let downCounter = 0;
+                let forwardCounter = 0;
+                for (let index = 0; index < results.length; index++) {
+                    const data = results[index].split(' ');
+                    const direction = data[0];
+                    const value = parseInt(data[1]);
+                    switch (direction) {
+                        case "forward":
+                            forwardCounter+=value;
+                            break;
+                        case "down":
+                            downCounter+=value;
+                            break;
+                        case "up":
+                            downCounter-=value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                document.getElementById("results-1").innerHTML = "First part answer : " + (downCounter*forwardCounter);
+
+                downCounter = 0;
+                forwardCounter = 0;
+                let aim = 0;
+                for (let index = 0; index < results.length; index++) {
+                    const data = results[index].split(' ');
+                    const direction = data[0];
+                    const value = parseInt(data[1]);
+                    switch (direction) {
+                        case "forward":
+                            forwardCounter+=value;
+                            downCounter+=(value*aim);
+                            break;
+                        case "down":
+                            aim+=value;
+                            break;
+                        case "up":
+                            aim-=value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                document.getElementById("results-2").innerHTML = "Second part answer : " + (downCounter*forwardCounter);
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    </script>
+    <br />
+    <a href="../index.html">Menu</a>
+</body>
+
+</html>
