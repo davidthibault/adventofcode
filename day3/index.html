@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Advent of code</title>
+</head>
+
+<body>
+    <h1>Advent of code 2021 : Day 3</h1>
+    <div id="results-1"></div>
+    <div id="results-2"></div>
+    <script>
+        const url = "input.txt";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const results = xhttp.responseText.split('\n');
+                let gammaOne = new Array();
+                let gammaZero = new Array();
+                let gammaResult = '';
+                let epsilonResult = '';
+                for (let index = 0; index < results.length; index++) {
+                    for (let i = 0; i < results[index].length; i++) {
+                        const gamma = results[index][i];
+                        if (gammaOne.length <= i) {
+                            gammaOne[i] = 0;
+                            gammaZero[i] = 0;
+                        }
+                        if (gamma == 1)
+                            gammaOne[i]++;
+                        else
+                            gammaZero[i]++;
+                    }
+                }
+                for (let i = 0; i < gammaOne.length; i++) {
+                    if (gammaOne[i] > gammaZero[i]) {
+                        gammaResult += "1";
+                        epsilonResult += "0";
+                    }
+                    else {
+                        gammaResult += "0";
+                        epsilonResult += "1";
+                    }
+                }
+                const finalResult = parseInt(gammaResult, 2) * parseInt(epsilonResult, 2);
+                document.getElementById("results-1").innerHTML = "First part answer : " + finalResult;
+
+
+                let oneO2Counter = new Array();
+                let zeroO2Counter = new Array();
+                let o2Result = results.concat();
+
+                let oneCO2Counter = new Array();
+                let zeroCO2Counter = new Array();
+                let co2Result = results.concat();
+                for (let i = 0; i < o2Result[0].length; i++) {
+                    if (oneO2Counter.length <= i) {
+                        oneO2Counter[i] = 0;
+                        zeroO2Counter[i] = 0;
+                        oneCO2Counter[i] = 0;
+                        zeroCO2Counter[i] = 0;
+                    }
+                    let index = 0
+                    for (index = 0; index < o2Result.length; index++) {
+                        const binary = o2Result[index][i];
+                        if (binary == 1)
+                            oneO2Counter[i]++;
+                        else
+                            zeroO2Counter[i]++;
+                    }
+
+                    index = 0;
+                    let bitTonFind = oneO2Counter[i] >= zeroO2Counter[i] ? 1 : 0;
+
+                    while (index < o2Result.length && o2Result.length > 1)
+                    {
+                        if (o2Result[index][i] == bitTonFind) {
+                            index++;
+                        } else {
+                            o2Result.splice(index, 1);
+                        }
+                    } 
+
+                    for (let index = 0; index < co2Result.length; index++) {
+                        const binary = co2Result[index][i];
+                        if (binary == 1)
+                            oneCO2Counter[i]++;
+                        else
+                            zeroCO2Counter[i]++;
+                    }
+
+                    index = 0;
+                    bitTonFind = oneCO2Counter[i] < zeroCO2Counter[i] ? 1 : 0;
+                    while (index < co2Result.length && co2Result.length > 1)
+                    {
+                        if (co2Result[index][i] == bitTonFind) {
+                            index++;
+                        } else {
+                                co2Result.splice(index, 1);
+                        }
+                    } 
+                }
+                const finalResult2 = parseInt(o2Result, 2) * parseInt(co2Result, 2);
+                document.getElementById("results-2").innerHTML = "Second part answer : " + finalResult2;
+
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    </script>
+    <br />
+    <a href="../index.html">Menu</a>
+</body>
+
+</html>
