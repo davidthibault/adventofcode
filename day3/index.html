@@ -16,6 +16,7 @@
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 const results = xhttp.responseText.split('\n');
+                /** Part 1 **/
                 let gammaOne = new Array();
                 let gammaZero = new Array();
                 let gammaResult = '';
@@ -45,8 +46,9 @@
                 }
                 const finalResult = parseInt(gammaResult, 2) * parseInt(epsilonResult, 2);
                 document.getElementById("results-1").innerHTML = "First part answer : " + finalResult;
+                /** End Part 1 **/
 
-
+                /** Part 2 **/
                 let oneO2Counter = new Array();
                 let zeroO2Counter = new Array();
                 let o2Result = results.concat();
@@ -73,14 +75,13 @@
                     index = 0;
                     let bitTonFind = oneO2Counter[i] >= zeroO2Counter[i] ? 1 : 0;
 
-                    while (index < o2Result.length && o2Result.length > 1)
-                    {
+                    while (index < o2Result.length && o2Result.length > 1) {
                         if (o2Result[index][i] == bitTonFind) {
                             index++;
                         } else {
                             o2Result.splice(index, 1);
                         }
-                    } 
+                    }
 
                     for (let index = 0; index < co2Result.length; index++) {
                         const binary = co2Result[index][i];
@@ -92,18 +93,17 @@
 
                     index = 0;
                     bitTonFind = oneCO2Counter[i] < zeroCO2Counter[i] ? 1 : 0;
-                    while (index < co2Result.length && co2Result.length > 1)
-                    {
+                    while (index < co2Result.length && co2Result.length > 1) {
                         if (co2Result[index][i] == bitTonFind) {
                             index++;
                         } else {
-                                co2Result.splice(index, 1);
+                            co2Result.splice(index, 1);
                         }
-                    } 
+                    }
                 }
                 const finalResult2 = parseInt(o2Result, 2) * parseInt(co2Result, 2);
                 document.getElementById("results-2").innerHTML = "Second part answer : " + finalResult2;
-
+                /** End Part 2 **/
             }
         };
         xhttp.open("GET", url, true);

@@ -16,13 +16,16 @@
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 const results = xhttp.responseText.split('\n');
+                /** Part 1 **/
                 let upCounter = 0;
                 for (let index = 1; index < results.length; index++) {
                     if (parseInt(results[index]) >= parseInt(results[index - 1]))
                         upCounter++;
                 }
                 document.getElementById("results-1").innerHTML = "First part answer : " + upCounter;
+                /** End Part 1 **/
 
+                /** Part 2 **/
                 upCounter = 0;
                 for (let index = 1; index < results.length - 2; index += 1) {
                     const previousCount = parseInt(results[index - 1]) + parseInt(results[index]) + parseInt(results[index + 1]);
@@ -31,6 +34,7 @@
                         upCounter++;
                 }
                 document.getElementById("results-2").innerHTML = "Second part answer : " + upCounter;
+                /** End Part 2 **/
             }
         };
         xhttp.open("GET", url, true);
