@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Advent of code</title>
+</head>
+
+<body>
+    <h1>Advent of code 2021 : Day 4</h1>
+    <div id="results-1"></div>
+    <div id="results-2"></div>
+    <script>
+
+        const url = "input.txt";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const results = xhttp.responseText.split('\n');
+                let drawNumbers = results[0].split(',');
+                let boards = new Array();
+                for (let index = 2; index < results.length; index += 6) {
+                    var matrix = new Object();
+                    matrix.lines = new Array(5);
+                    matrix.columns = new Array(5);
+                    for (let i = 0; i < 5; i++) {
+                        matrix.lines[i] = results[index + i].trim().split(/[\s,\t,\n]+/);
+                        for (let j = 0; j < 5; j++) {
+                            if (i == 0)
+                                matrix.columns[j] = new Array(5);
+                            matrix.columns[j][i] = matrix.lines[i][j];
+                        }
+                    }
+                    boards.push(matrix);
+                }
+                /** Part 1 **/
+                let numbers = drawNumbers.splice(0, 4);
+                let found = false;
+                let winnerBoardIndex;
+                for (let numberIndex = 0; numberIndex < drawNumbers.length; numberIndex++) {
+                    if (found)
+                        break;
+                    numbers.push(drawNumbers[numberIndex]);
+                    for (let boardindex = 0; boardindex < boards.length; boardindex++) {
+                        if (found)
+                            break;
+                        const board = boards[boardindex];
+                        for (let searchIndex = 0; searchIndex < 5; searchIndex++) {
+                            if (board.lines[searchIndex].every(function (val) {
+                                return numbers.indexOf(val) !== -1;
+                            })) {
+                                winnerBoardIndex = boardindex;
+                                found = true;
+                                break;
+                            }
+                            if (board.columns[searchIndex].every(function (val) {
+                                return numbers.indexOf(val) !== -1;
+                            })) {
+                                winnerBoardIndex = boardindex;
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+                let sum = 0;
+                const board = boards[winnerBoardIndex];
+                for (let lineIndex = 0; lineIndex < 5; lineIndex++) {
+                    for (let columnIndex = 0; columnIndex < 5; columnIndex++) {
+                        const value = board.lines[lineIndex][columnIndex];
+                        if (numbers.indexOf(value) < 0)
+                            sum += parseInt(value);
+                    }
+                }
+
+                const finalResult1 = numbers[numbers.length - 1] * sum;
+                document.getElementById("results-1").innerHTML = "First part answer : " + finalResult1;
+                /** End Part 1 **/
+
+                /** Part 2 **/
+                drawNumbers = results[0].split(',');
+                numbers = drawNumbers.splice(0, 4);
+                let winnerBoard;
+                let lastNumber;
+                let lastNumberIndex;
+                found = false;
+                for (let numberIndex = 0; numberIndex < drawNumbers.length; numberIndex++) {
+                    numbers.push(drawNumbers[numberIndex]);
+                    for (let boardindex = 0; boardindex < boards.length; boardindex++) {
+                        const board = boards[boardindex];
+                        for (let searchIndex = 0; searchIndex < 5; searchIndex++) {
+                            if (board.lines[searchIndex].every(function (val) {
+                                return numbers.indexOf(val) !== -1;
+                            })) {
+                                lastNumber = drawNumbers[numberIndex];
+                                lastNumberIndex = numberIndex;
+                                found = true;
+                                break;
+                            }
+                            if (board.columns[searchIndex].every(function (val) {
+                                return numbers.indexOf(val) !== -1;
+                            })) {
+                                lastNumber = drawNumbers[numberIndex];
+                                lastNumberIndex = numberIndex;
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (found) {
+                            winnerBoard = board;
+                            boards.splice(boardindex, 1);
+                            found = false;
+                        }
+                    }
+                }
+                sum = 0;
+                let finalNumbers = numbers.splice(0, lastNumberIndex + 5);
+                for (let lineIndex = 0; lineIndex < 5; lineIndex++) {
+                    for (let columnIndex = 0; columnIndex < 5; columnIndex++) {
+                        const value = winnerBoard.lines[lineIndex][columnIndex];
+                        if (finalNumbers.indexOf(value) < 0)
+                            sum += parseInt(value);
+                    }
+                }
+                const finalResult2 = lastNumber * sum;
+                document.getElementById("results-2").innerHTML = "Second part answer : " + finalResult2;
+                /** End Part 2 **/
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    </script>
+    <br />
+    <a href="../index.html">Menu</a>
+</body>
+
+</html>
