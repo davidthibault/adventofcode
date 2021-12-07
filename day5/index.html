@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Advent of code</title>
+</head>
+
+<body>
+    <h1>Advent of code 2021 : Day 5</h1>
+    <div id="results-1"></div>
+    <div id="results-2"></div>
+    <script>
+        class Point {
+            constructor(coord) {
+                this.x = coord[0];
+                this.y = coord[1];
+                if (typeof this.x == 'string')
+                    this.x = parseFloat(this.x);
+                if (typeof this.y == 'string')
+                    this.y = parseFloat(this.y);
+            }
+            getStringCoord() {
+                return this.x + ',' + this.y;
+            }
+        }
+        class Line {
+            constructor(origin, destination) {
+                this.origin = origin;
+                this.destination = destination;
+            }
+
+            covers(diagonalIncluded = false) {
+                let points = new Array();
+                if (this.origin.y == this.destination.y) { //horizontal
+                    if (this.origin.x < this.destination.x) {
+                        for (let index = this.origin.x; index <= this.destination.x; index++) {
+                            const element = new Point([index, this.origin.y]);
+                            points.push(element);
+                        }
+                    }
+                    if (this.origin.x > this.destination.x) {
+                        for (let index = this.destination.x; index <= this.origin.x; index++) {
+                            const element = new Point([index, this.origin.y]);
+                            points.push(element);
+                        }
+                    }
+                } else if (this.origin.x == this.destination.x) {//vertical
+                    if (this.origin.y < this.destination.y) {
+                        for (let index = this.origin.y; index <= this.destination.y; index++) {
+                            const element = new Point([this.origin.x, index]);
+                            points.push(element);
+                        }
+                    }
+                    if (this.origin.y > this.destination.y) {
+                        for (let index = this.destination.y; index <= this.origin.y; index++) {
+                            const element = new Point([this.origin.x, index]);
+                            points.push(element);
+                        }
+                    }
+
+                } else if (diagonalIncluded) {//diagonal
+                    if (this.destination.y > this.origin.y && this.destination.x > this.origin.x) {
+                        //direction x+ y+ 
+                        for (let index = this.origin.y; index <= this.destination.y; index++) {
+                            const element = new Point([this.origin.x + index - this.origin.y, index]);
+                            points.push(element);
+                        }
+                    }
+                    else if (this.destination.y < this.origin.y && this.destination.x > this.origin.x) {
+                        //direction x+ y- #
+                        for (let index = this.origin.y; index >= this.destination.y; index--) {
+                            const element = new Point([this.origin.x + (this.origin.y - index), index]);
+                            points.push(element);
+                        }
+                    }
+                    else if (this.destination.y > this.origin.y && this.destination.x < this.origin.x) {
+                        //direction x- y+ 
+                        for (let index = this.origin.y; index <= this.destination.y; index++) {
+                            const element = new Point([this.origin.x - (index - this.origin.y), index]);
+                            points.push(element);
+                        }
+                    }
+                    else if (this.destination.y < this.origin.y && this.destination.x < this.origin.x) {
+                        //direction x- y- #
+                        for (let index = this.origin.y; index >= this.destination.y; index--) {
+                            const element = new Point([this.origin.x + (index - this.origin.y), index]);
+                            points.push(element);
+                        }
+                    }
+                }
+                return points;
+            }
+        }
+
+        const url = "input.txt";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const results = xhttp.responseText.split('\n');
+                /** Part 1 **/
+                let pointsCovered = new Array();
+                let pointsCoveredWithDiagonal = new Array();
+                results.forEach(entry => {
+                    const points = entry.split(' -> ');
+                    const line = new Line(
+                        new Point(points[0].split(',')),
+                        new Point(points[1].split(','))
+                    );
+                    pointsCovered = pointsCovered.concat(line.covers());
+                    pointsCoveredWithDiagonal = pointsCoveredWithDiagonal.concat(line.covers(true));
+                });
+                let overlap = new Map();
+                const overlapPoints = new Map();
+                pointsCovered.forEach(pointCovered => {
+                    if (!overlapPoints.has(pointCovered.getStringCoord())) {
+                        overlapPoints.set(pointCovered.getStringCoord(), 0);
+                    }
+                    overlapPoints.set(pointCovered.getStringCoord(), overlapPoints.get(pointCovered.getStringCoord()) + 1);
+                });
+                const overlapPointsWithDiagonal = new Map();
+                pointsCoveredWithDiagonal.forEach(pointCovered => {
+                    if (!overlapPointsWithDiagonal.has(pointCovered.getStringCoord())) {
+                        overlapPointsWithDiagonal.set(pointCovered.getStringCoord(), 0);
+                    }
+                    overlapPointsWithDiagonal.set(pointCovered.getStringCoord(), overlapPointsWithDiagonal.get(pointCovered.getStringCoord()) + 1);
+                });
+                let finalResult1 = 0;
+                overlapPoints.forEach(overlapPoint => {
+                    if (overlapPoint >= 2)
+                        finalResult1++
+                });
+                document.getElementById("results-1").innerHTML = "First part answer : " + finalResult1;
+
+                let finalResult2 = 0;
+                overlapPointsWithDiagonal.forEach(overlapPoint => {
+                    if (overlapPoint >= 2)
+                        finalResult2++
+                });
+                document.getElementById("results-2").innerHTML = "Second part answer : " + finalResult2;
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    </script>
+    <br />
+    <a href="../index.html">Menu</a>
+</body>
+
+</html>

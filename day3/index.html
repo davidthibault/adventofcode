@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="fr">
+<html lang=fr>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset=utf-8>
     <title>Advent of code</title>
 </head>
 
 <body>
     <h1>Advent of code 2021 : Day 3</h1>
-    <div id="results-1"></div>
-    <div id="results-2"></div>
+    <div id=results-1></div>
+    <div id=results-2></div>
     <script>
-        const url = "input.txt";
+        const url = input.txt;
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -36,16 +36,16 @@
                 }
                 for (let i = 0; i < gammaOne.length; i++) {
                     if (gammaOne[i] > gammaZero[i]) {
-                        gammaResult += "1";
-                        epsilonResult += "0";
+                        gammaResult += 1;
+                        epsilonResult += 0;
                     }
                     else {
-                        gammaResult += "0";
-                        epsilonResult += "1";
+                        gammaResult += 0;
+                        epsilonResult += 1;
                     }
                 }
                 const finalResult = parseInt(gammaResult, 2) * parseInt(epsilonResult, 2);
-                document.getElementById("results-1").innerHTML = "First part answer : " + finalResult;
+                document.getElementById(results-1).innerHTML = First part answer :  + finalResult;
                 /** End Part 1 **/
 
                 /** Part 2 **/
@@ -102,15 +102,15 @@
                     }
                 }
                 const finalResult2 = parseInt(o2Result, 2) * parseInt(co2Result, 2);
-                document.getElementById("results-2").innerHTML = "Second part answer : " + finalResult2;
+                document.getElementById(results-2).innerHTML = Second part answer :  + finalResult2;
                 /** End Part 2 **/
             }
         };
-        xhttp.open("GET", url, true);
+        xhttp.open(GET, url, true);
         xhttp.send();
     </script>
     <br />
-    <a href="../index.html">Menu</a>
+    <a href=../index.html>Menu</a>
 </body>
 
 </html>

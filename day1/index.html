@@ -1,17 +1,17 @@
 <!doctype html>
-<html lang="fr">
+<html lang=fr>
 
 <head>
-    <meta charset="utf-8">
+    <meta charset=utf-8>
     <title>Advent of code</title>
 </head>
 
 <body>
     <h1>Advent of code 2021 : Day 1</h1>
-    <div id="results-1"></div>
-    <div id="results-2"></div>
+    <div id=results-1></div>
+    <div id=results-2></div>
     <script>
-        const url = "input.txt";
+        const url = input.txt;
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
@@ -22,7 +22,7 @@
                     if (parseInt(results[index]) >= parseInt(results[index - 1]))
                         upCounter++;
                 }
-                document.getElementById("results-1").innerHTML = "First part answer : " + upCounter;
+                document.getElementById(results-1).innerHTML = First part answer :  + upCounter;
                 /** End Part 1 **/
 
                 /** Part 2 **/
@@ -33,15 +33,15 @@
                     if (currentCount > previousCount)
                         upCounter++;
                 }
-                document.getElementById("results-2").innerHTML = "Second part answer : " + upCounter;
+                document.getElementById(results-2).innerHTML = Second part answer :  + upCounter;
                 /** End Part 2 **/
             }
         };
-        xhttp.open("GET", url, true);
+        xhttp.open(GET, url, true);
         xhttp.send();
     </script>
     <br />
-    <a href="../index.html">Menu</a>
+    <a href=../index.html>Menu</a>
 </body>
 
 </html>
