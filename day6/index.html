@@ -23,7 +23,7 @@
                         lanternfishes[parseInt(life)] = 0;
                     lanternfishes[parseInt(life)]++
                 });
-                for (let i = 0; i < 256; i++) {
+                for (let i = 0; i < 80; i++) {
                     let lanternfishesJ1 = new Object();
                     for (let j = 8; j >= 0; j--) {
                         if (typeof lanternfishes[j] == 'undefined')
@@ -45,8 +45,39 @@
                 for (let i in lanternfishes) {
                     finalResult1 += lanternfishes[i];
                 }
-
+                
                 document.getElementById("results-1").innerHTML = "First part answer : " + finalResult1;
+
+                lanternfishes = new Object();
+                results.forEach(life => {
+                    if (typeof lanternfishes[life] == "undefined")
+                        lanternfishes[parseInt(life)] = 0;
+                    lanternfishes[parseInt(life)]++
+                });
+                for (let i = 0; i < 256; i++) {
+                    let lanternfishesJ1 = new Object();
+                    for (let j = 8; j >= 0; j--) {
+                        if (typeof lanternfishes[j] == 'undefined')
+                            continue;
+                        if (j == 0) {
+                            if (typeof lanternfishesJ1[6] == 'undefined')
+                                lanternfishesJ1[6] = 0;
+                            lanternfishesJ1[6] += lanternfishes[j];
+                            lanternfishesJ1[8] = lanternfishes[j];
+                        }
+                        else {
+                            lanternfishesJ1[j - 1] = lanternfishes[j];
+                        }
+                    }
+                    lanternfishes = lanternfishesJ1;
+                }
+                let finalResult2 = 0;
+
+                for (let i in lanternfishes) {
+                    finalResult2 += lanternfishes[i];
+                }
+
+                document.getElementById("results-2").innerHTML = "Second part answer : " + finalResult2;
             }
         };
         xhttp.open("GET", url, true);

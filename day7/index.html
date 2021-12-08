@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Advent of code</title>
+</head>
+
+<body>
+    <h1>Advent of code 2021 : Day 7</h1>
+    <div id="results-1"></div>
+    <div id="results-2"></div>
+    <script>
+        const url = "input.txt";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const results = xhttp.responseText.split(',');
+                let min = NaN;
+                let max = NaN;
+                results.forEach(result => {
+                    let value = parseInt(result);
+                    if (isNaN(min) || value < min)
+                        min = value;
+                    if (isNaN(max) || value > max)
+                        max = value;
+                });
+                let minCounter = NaN;
+                let betterIndex = 0;
+                for (let index = min; index <= max; index++) {
+                    const element = results[index];
+                    let currentCounter = 0;
+                    results.forEach(result => {
+                        let value = parseInt(result);
+                        currentCounter+=Math.abs(value-index);
+                    });
+                    if(isNaN(minCounter) || currentCounter<minCounter) {
+                        minCounter = currentCounter;
+                        betterIndex = index;
+                    }
+                }
+                document.getElementById("results-1").innerHTML = "First part answer : " + minCounter;
+                
+            
+                function getCosumption(origin, detination) {
+                    let count = 0;
+                    for (let index = 1; index <= Math.abs(origin-detination); index++) {
+                        count+=index;
+                    }
+                    return count;
+                }
+                minCounter = NaN;
+                betterIndex = 0;
+                for (let index = min; index <= max; index++) {
+                    const element = results[index];
+                    let currentCounter = 0;
+                    results.forEach(result => {
+                        let value = parseInt(result);
+                        currentCounter+=getCosumption(value,index);
+                    });
+                    if(isNaN(minCounter) || currentCounter<minCounter) {
+                        minCounter = currentCounter;
+                        betterIndex = index;
+                    }
+                }
+                document.getElementById("results-2").innerHTML = "Second part answer : " + minCounter;
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    </script>
+    <br />
+    <a href="../index.html">Menu</a>
+</body>
+
+</html>
