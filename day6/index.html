@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Advent of code</title>
+</head>
+
+<body>
+    <h1>Advent of code 2021 : Day 6</h1>
+    <div id="results-1"></div>
+    <div id="results-2"></div>
+    <script>
+        const url = "input.txt";
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                const results = xhttp.responseText.split(',');
+
+                let lanternfishes = new Object();
+                results.forEach(life => {
+                    if (typeof lanternfishes[life] == "undefined")
+                        lanternfishes[parseInt(life)] = 0;
+                    lanternfishes[parseInt(life)]++
+                });
+                for (let i = 0; i < 256; i++) {
+                    let lanternfishesJ1 = new Object();
+                    for (let j = 8; j >= 0; j--) {
+                        if (typeof lanternfishes[j] == 'undefined')
+                            continue;
+                        if (j == 0) {
+                            if (typeof lanternfishesJ1[6] == 'undefined')
+                                lanternfishesJ1[6] = 0;
+                            lanternfishesJ1[6] += lanternfishes[j];
+                            lanternfishesJ1[8] = lanternfishes[j];
+                        }
+                        else {
+                            lanternfishesJ1[j - 1] = lanternfishes[j];
+                        }
+                    }
+                    lanternfishes = lanternfishesJ1;
+                }
+                let finalResult1 = 0;
+
+                for (let i in lanternfishes) {
+                    finalResult1 += lanternfishes[i];
+                }
+
+                document.getElementById("results-1").innerHTML = "First part answer : " + finalResult1;
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    </script>
+    <br />
+    <a href="../index.html">Menu</a>
+</body>
+
+</html>

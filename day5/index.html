@@ -98,7 +98,6 @@
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
                 const results = xhttp.responseText.split('\n');
-                /** Part 1 **/
                 let pointsCovered = new Array();
                 let pointsCoveredWithDiagonal = new Array();
                 results.forEach(entry => {
